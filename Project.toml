@@ -8,6 +8,7 @@ DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
 FilesLH = "69233b93-b644-4f5d-9b2e-8880c8b19068"
 
 [compat]
+DocStringExtensions = "0.8"
 julia = "1"
 
 [extras]
