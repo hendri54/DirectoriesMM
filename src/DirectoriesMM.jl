@@ -109,25 +109,6 @@ end
 profile_dir(computer :: Union{Symbol, Computer} = :current) =
 	joinpath(project_dir(computer),  "statprof");
 
-function delete_profile_dir(computer :: Union{Symbol, Computer} = :current)
-	# Safeguards against deleting the wrong directory
-	rmDir = joinpath(profile_dir(computer));
-	@assert isfile(rmDir, "index.html")
-	@assert isfile(rmDir, "files.html")
-	showPath = fpath_to_show(rmDir);
-	ans1 = ask_yes_no("Removing directory  $showPath");
-	if ans1
-		rm(rmDir, recursive = true);
-		println("  Removed.");
-	end
-end
-
-# Show a file name with `n` last directories
-function fpath_to_show(fPath :: String; nDirs :: Integer = 3)
-    fDir, fName = splitdir(fPath);
-    s = right_dirs(fDir, nDirs) * " - " * fName;
-    return s
-end
 
 
 ## -----------  Files needed for paper
