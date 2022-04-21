@@ -3,7 +3,10 @@ module DirectoriesMM
 using DocStringExtensions;
 using CommonLH, FilesLH;
 
-export relBaseDir, base_dir, notation_dir, notation_copy_dir, project_dir, paper_dir;
+export relBaseDir, base_dir;
+export notation_dir, notation_copy_dir;
+export sym_table_path;
+export project_dir, paper_dir;
 export computer_out_dir, computer_mat_dir, computer_log_dir, computer_json_dir, global_comparison_dir;
 export profile_dir, delete_profile_dir;
 
@@ -41,18 +44,6 @@ function project_dir(computer :: Union{Symbol, Computer} = :current)
 end
 
 
-# Files for the paper live here. 
-# On local machine: write directly to Dropbox.
-# On remote: these files go into an arbitrary local dir.
-function paper_dir(computer :: Union{Symbol, Computer} = :current)
-	if is_remote(computer)
-		pDir = joinpath(project_dir(computer), "paper");
-	else
-		pDir = joinpath(dropbox_dir(computer), "lutz", "paper");
-	end
-	return pDir
-end
-	
 """
 	$(SIGNATURES)
 
@@ -114,8 +105,20 @@ profile_dir(computer :: Union{Symbol, Computer} = :current) =
 ## -----------  Files needed for paper
 # Live in Dropbox (if local)
 
-dropbox_dir(computer = :current) = "/Users/lutz/Dropbox/Dropout Policies";
+dropbox_dir(computer = :current) = 
+	"/Users/lutz/Dropbox/Dropout Policies/lutz/admissions idea";
 
+
+# Files for the paper live here. 
+function paper_dir(computer :: Union{Symbol, Computer} = :current)
+	# if is_remote(computer)
+		pDir = joinpath(base_dir(computer), "paper");
+	# else
+	# 	pDir = joinpath(dropbox_dir(computer), "lutz", "paper");
+	# end
+	return pDir
+end
+	
 
 """
 	$(SIGNATURES)
@@ -125,15 +128,19 @@ Local dir, so it works on server.
 """
 function notation_dir(computer = :current)
 	# if is_remote(computer)
-		pDir = joinpath(project_dir(computer), "notation");
+		pDir = joinpath(paper_dir(computer), "notation");
 	# else
 	# 	pDir = joinpath(dropbox_dir(computer), "lutz", "notation");
 	# end
 	return pDir
 end
 
-notation_copy_dir(computer = :current) = 
-	joinpath(dropbox_dir(computer), "lutz", "notation");
+# notation_copy_dir(computer = :current) = 
+# 	dropbox_dir(computer);
+
+# CSV file exported from excel. Local
+sym_table_path(computer = :current) = 
+    joinpath(notation_dir(computer), "notation_table.csv");
 
 
 end # module
